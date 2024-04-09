@@ -103,3 +103,47 @@ def parse_pattern(pattern, allowed="CLUNT"):
         pattern_dict[x].append(slice(start,end))
         start = end
     return pattern_dict
+
+
+def check_seq_mismatch(seq_list, correct_set_list, mismatch_dict_list):
+    '''
+    Returns
+        bool_valid: whether the seq is in mismatch_dict
+        bool_corrected: seq is valid, but not in correct_set
+        corrected_seq: '_'.join(corrected_seq_list)
+
+
+    >>> seq_list = ['ATA', 'AAT', 'ATA']
+    >>> correct_set_list = [{'AAA'},{'AAA'},{'AAA'}]
+    >>> mismatch_dict_list = [get_mismatch_dict(['AAA'])] * 3
+
+    >>> check_seq_mismatch(seq_list, correct_set_list, mismatch_dict_list)
+    (True, True, 'AAA_AAA_AAA')
+
+    >>> seq_list = ['AAA', 'AAA', 'AAA']
+    >>> check_seq_mismatch(seq_list, correct_set_list, mismatch_dict_list)
+    (True, False, 'AAA_AAA_AAA')
+    '''
+    bool_valid = True
+    bool_corrected = False
+    corrected_seq_list = []
+    for index, seq in enumerate(seq_list):
+        if seq not in correct_set_list[index]:
+            if seq not in mismatch_dict_list[index]:
+                bool_valid = False
+                return bool_valid, bool_corrected, ""
+            else:
+                bool_corrected = True
+                corrected_seq_list.append(mismatch_dict_list[index][seq])
+        else:
+            corrected_seq_list.append(seq)
+
+    return bool_valid, bool_corrected, '_'.join(corrected_seq_list)
+
+def str_fq(name, seq, qual, comment='+'):
+    """
+    >>> str_fq('name', 'ACGT', 'ABCD')
+    '@name\\nACGT\\n+\\nABCD\\n'
+    """
+    return f'@{name}\n{seq}\n{comment}\n{qual}\n'
+

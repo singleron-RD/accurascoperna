@@ -6,13 +6,16 @@ Input:
     protocol.json: whitelist and linker
 Output:
     3p R1 and R2 fastq
-    3p5p R1 and R2 fastq
+    5p R1 and R2 fastq
+    3p starsolo command
+    3p5p starsolo command
 """
 import argparse
 import json
 import os
 
-from utils import parse_pattern
+import pyfastx
+import utils
 
 
 def get_protocol_dict(assets_dir):
@@ -32,12 +35,10 @@ def get_protocol_dict(assets_dir):
         cur = protocol_dict[protocol]
         for x in ["bc_3p", "bc_5p", "linker_3p"]:
             cur[x] = os.path.join(whitelist_dir, protocol, x)
-        cur["pattern_dict_3p"] = parse_pattern(cur["pattern_3p"])
-        cur["pattern_dict_5p"] = parse_pattern(cur["pattern_5p"])
+        cur["pattern_dict_3p"] = utils.parse_pattern(cur["pattern_3p"])
+        cur["pattern_dict_5p"] = utils.parse_pattern(cur["pattern_5p"])
     return protocol_dict
 
-class Convert:
-    pass
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -52,7 +53,53 @@ if __name__ == "__main__":
     parser.add_argument('--ext_args_3p5p',)
 
     args = parser.parse_args()
+    protocol_dict = get_protocol_dict(args.assets_dir)
+    protocol = protocol_dict[args.protocol]
+    bc_3p_mismatch_dict = utils.get_mismatch_dict(protocol["bc_3p"])
+    bc_5p_mismatch_dict = utils.get_mismatch_dict(protocol["bc_5p"])
+    pattern_dict_3p = protocol["pattern_dict_3p"]
+    pattern_dict_5p = protocol["pattern_dict_5p"]
+    outdict = {f"{prime}_{r}":f"{args.sample}_{prime}_{r}.fastq" for prime in ['3p','5p'] for r in ['R1','R2']}
+    # add extra bp to force 5p UMI the same length as 3p UMI
+    umi_3p_len = pattern_dict_3p["U"][0].stop - pattern_dict_3p["U"][0].start
+    umi_5p_len = pattern_dict_5p["U"][0].stop - pattern_dict_5p["U"][0].start
+    extra_len =  umi_3p_len - umi_5p_len
+    extra_bp = ('ATCG' * 5)[:extra_len]
 
-    runner = Convert(args)
-    runner.write_cmd()
+    # open for write
+    outdict = {k:open(v,'w') for k,v in outdict.items()}
+
+    with pyfastx.Fastx(args.fq1) as fq1, pyfastx.Fastx(args.fq2) as fq2:
+        for (name1, seq1, qual1), (name2,seq2,qual2) in zip(fq1, fq2):
+            prime = 'invalid'
+            bc_3p = utils.get_seq_str(pattern_dict_3p["C"])
+            if bc_3p in bc_3p_mismatch_dict:
+                prime = '3p'
+                bc = bc_3p_mismatch_dict['bc_3p']
+                umi = utils.get_seq_str(seq1, pattern_dict_3p["U"])
+                bc_qual = utils.get_seq_str(qual1, pattern_dict_3p["C"])
+                umi_qual = utils.get_seq_str(qual1, pattern_dict_3p["U"])
+            else:
+                bc_5p = utils.get_seq_str(pattern_dict_5p["C"])
+                if bc_5p in bc_5p_mismatch_dict:
+                    prime = '5p'
+                    bc = bc_5p_mismatch_dict['bc_5p']
+                    umi = utils.get_seq_str(seq2, pattern_dict_5p["U"])
+                    bc_qual = utils.get_seq_str(qual1, pattern_dict_5p["C"]) + extra_bp
+                    umi_qual = utils.get_seq_str(qual1, pattern_dict_5p["U"]) + 'F' * extra_len
+            if prime in ['3p','5p']:
+                seq1 = bc+umi
+                qual1 = bc_qual+umi_qual
+                outdict[f"{prime}_R1"].write(utils.str_fq(name1, seq1, qual1))
+                outdict[f"{prime}_R2"].write(utils.str_fq(name2, seq2, qual2))
+
+
+
+
+
+
+
+
+
+
 
