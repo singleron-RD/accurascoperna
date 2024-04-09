@@ -64,6 +64,8 @@ def get_mismatch_dict(seq_list, n_mismatch=1):
     >>> mismatch_dict["AACGTGAA"] == "AACGTGAT"
     True
     """
+    if not isinstance(seq_list, list):
+        raise TypeError(f"seq_list must be list, not {type(seq_list)}")
     mismatch_dict = {}
     for seq in seq_list:
         seq = seq.strip()
