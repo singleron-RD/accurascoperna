@@ -1,9 +1,9 @@
 {
     "AccuraSCOPE-V1": {
-    "pattern_3p": "L9C9U12",
-    "pattern_5p": "C6U5",
-    "bc_3p": "bc.3p.txt",
-    "bc_5p": "bc.5p.txt",
-    "linker_3p": "linker.3p.txt"
+    "pattern_p3": "L9C9U12",
+    "pattern_p5": "C6U5",
+    "bc_p3": "bc.p3.txt",
+    "bc_p5": "bc.p5.txt",
+    "linker_p3": "linker.p3.txt"
     }
 }
