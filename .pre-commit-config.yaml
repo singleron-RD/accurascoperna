@@ -8,3 +8,10 @@ repos:
     hooks:
       - id: editorconfig-checker
         alias: ec
+
+  - repo: local
+    hooks:
+      - id: parameter_docs
+        name: parameter_docs
+        entry: nf-core schema build
+        language: system
