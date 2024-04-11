@@ -5,7 +5,7 @@
 */
 
 include { FASTQC                 } from '../modules/nf-core/fastqc/main'
-include { MULTIQC                } from '../modules/nf-core/multiqc/main'
+include { MULTIQC                } from '../modules/local/multiqc_sgr/main'
 include { paramsSummaryMap       } from 'plugin/nf-validation'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -152,6 +152,7 @@ process STARSOLO_P3 {
     val starsolo_cmd
 
     output:
+    tuple val(meta), path("${meta.id}.p3.matrix/")       , emit: matrix
     tuple val(meta), path('*d.out.bam')               , emit: bam
     tuple val(meta), path('*.Solo.out/*')             , emit: solo_out
     path('*Log.final.out')                            , emit: log_mapping
