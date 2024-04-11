@@ -178,6 +178,8 @@ if [ -d ${prefix}Solo.out ]; then
 fi
 
 mv ${prefix}Solo.out/GeneFull_Ex50pAS/Summary.csv ${prefix}Solo.out/GeneFull_Ex50pAS/${prefix}Summary.csv
+mkdir ${prefix}matrix
+mv ${prefix}Solo.out/GeneFull_Ex50pAS/{raw,filtered} ./${prefix}matrix/
 
 cat <<-END_VERSIONS > versions.yml
 "${task.process}":
