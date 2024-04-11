@@ -1,6 +1,6 @@
 # singleron-RD/accurascoperna pipeline parameters
 
-Bioinfomatics Pipeline for AccuraSCOPE-RNA - low throughput single cell RNA
+Pipeline to analyze AccuraSCOPE RNA data
 
 ## Input/output options
 
@@ -32,7 +32,7 @@ Genome files and parameters.
 
 | Parameter | Description | Type | Default | Required | Hidden |
 |-----------|-----------|-----------|-----------|-----------|-----------|
-| `protocol` | Predefined pattern and whitelist. <details><summary>Help</summary><small>If set to "new", --pattern and --whitelist are required. The default is to auto-detect the protocol when running GEXSCOPE. </small></details>| `string` | AccuraSCOPE-V1 |  |  |
+| `protocol` | Predefined pattern and whitelist. | `string` | AccuraSCOPE-V1 |  |  |
 
 ## STARSolo
 

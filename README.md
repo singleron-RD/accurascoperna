@@ -1,6 +1,8 @@
 ## Introduction
 
-**singleron-RD/accurascoperna** is a bioinformatics pipeline for processing data from AccuraSCOPE RNA kit.
+**singleron-RD/accurascoperna** is a bioinformatics pipeline for processing data from AccuraSCOPE RNA kit: low-throughput single cell 5' + 3' RNA .
+
+In brief, the workflow does the following:
 
 - Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))
 - Demultiplexing 3' and 5' reads; convert 5' barcode to 3' barcode; generate STARSolo command-line arguments ([`convert.py`](./bin/convert.py))

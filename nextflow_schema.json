@@ -2,7 +2,7 @@
     "$schema": "http://json-schema.org/draft-07/schema",
     "$id": "https://raw.githubusercontent.com/singleron-RD/accurascoperna/master/nextflow_schema.json",
     "title": "singleron-RD/accurascoperna pipeline parameters",
-    "description": "Bioinfomatics Pipeline for AccuraSCOPE-RNA - low throughput single cell RNA",
+    "description": "Pipeline to analyze AccuraSCOPE RNA data",
     "type": "object",
     "definitions": {
         "input_output_options": {
@@ -91,8 +91,7 @@
                     "type": "string",
                     "default": "AccuraSCOPE-V1",
                     "enum": ["AccuraSCOPE-V1"],
-                    "description": "Predefined pattern and whitelist.",
-                    "help_text": "If set to \"new\", --pattern and --whitelist are required. The default is to auto-detect the protocol when running GEXSCOPE. "
+                    "description": "Predefined pattern and whitelist."
                 }
             }
         },

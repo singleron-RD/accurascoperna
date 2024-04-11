@@ -24,7 +24,7 @@ lint:
 repository_type: pipeline
 template:
   author: zhouyiqi
-  description: single cell RNASeq nextflow pipeline for AccuraSCOPE RNA
+  description: Pipeline to analyze AccuraSCOPE RNA data
   name: accurascoperna
   prefix: singleron-RD
   skip:
