@@ -3,7 +3,7 @@ process MULTIQC {
 
     // no syntax sugar https://github.com/nextflow-io/nextflow/issues/4685
     conda "${moduleDir}/environment.yml"
-    container "quay.io/singleron-rd/multiqc_sgr:test_actions"
+    container "quay.io/singleron-rd/multiqc_sgr:1.21.0"
 
     input:
     path  multiqc_files, stageAs: "?/*"
