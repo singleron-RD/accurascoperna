@@ -1,7 +1,8 @@
 process MULTIQC {
     label 'process_single'
 
-    conda "pip:multiqc_sgr"
+    // no syntax sugar https://github.com/nextflow-io/nextflow/issues/4685
+    conda "${moduleDir}/environment.yml"
     container "quay.io/singleron-rd/multiqc_sgr:test_actions"
 
     input:
