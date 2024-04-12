@@ -8,8 +8,8 @@ In brief, the workflow does the following:
 - Demultiplexing 3' and 5' reads; convert 5' barcode to 3' barcode; generate STARSolo command-line arguments ([`convert.py`](./bin/convert.py))
 - Filter gtf attributes ([`filter_gtf.py`](./bin/filter_gtf.py))
 - Generate star genome Index ([`STAR`](https://github.com/alexdobin/STAR/))
-- Mapping and quantification of 3' reads(UMI-aware). ([`STARSolo`](https://github.com/alexdobin/STAR/blob/master/docs/STARsolo.md))
-- Mapping and quantification of 3' read + 5' reads(not UMI-aware). ([`STARSolo`](https://github.com/alexdobin/STAR/blob/master/docs/STARsolo.md))
+- Mapping and quantification of 3' reads. ([`STARSolo`](https://github.com/alexdobin/STAR/blob/master/docs/STARsolo.md))
+- Mapping and quantification of 3' read + 5' reads. ([`STARSolo`](https://github.com/alexdobin/STAR/blob/master/docs/STARsolo.md))
 - HTML report ([`MultiQC`](http://multiqc.info/))
 
 ## Documents

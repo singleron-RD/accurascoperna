@@ -152,12 +152,10 @@ process STARSOLO_P3 {
     val starsolo_cmd
 
     output:
-    tuple val(meta), path("${meta.id}.p3.matrix/")       , emit: matrix
     tuple val(meta), path('*d.out.bam')               , emit: bam
-    tuple val(meta), path('*.Solo.out/*')             , emit: solo_out
+    path("${meta.id}.p3.Solo.out")                    , emit: solo_out
     path('*Log.final.out')                            , emit: log_mapping
     path  "versions.yml"                              , emit: versions
-    path "*.Solo.out/GeneFull_Ex50pAS/${meta.id}.p3.Summary.csv" , emit: summary
 
     tuple val(meta), path('*sortedByCoord.out.bam')  , optional:true, emit: bam_sorted
     tuple val(meta), path('*toTranscriptome.out.bam'), optional:true, emit: bam_transcript
@@ -177,10 +175,6 @@ if [ -d ${prefix}Solo.out ]; then
     # Backslashes still need to be escaped (https://github.com/nextflow-io/nextflow/issues/67)
     find ${prefix}Solo.out \\( -name "*.tsv" -o -name "*.mtx" \\) -exec gzip -f {} \\;
 fi
-
-mv ${prefix}Solo.out/GeneFull_Ex50pAS/Summary.csv ${prefix}Solo.out/GeneFull_Ex50pAS/${prefix}Summary.csv
-mkdir ${prefix}matrix
-mv ${prefix}Solo.out/GeneFull_Ex50pAS/{raw,filtered} ./${prefix}matrix/
 
 cat <<-END_VERSIONS > versions.yml
 "${task.process}":
@@ -211,11 +205,10 @@ process STARSOLO_P3P5 {
 
     output:
     tuple val(meta), path('*d.out.bam')               , emit: bam
-    tuple val(meta), path('*.Solo.out/*')             , emit: solo_out
+    path("${meta.id}.p3p5.Solo.out")                  , emit: solo_out
     path('*Log.final.out')                            , emit: log_mapping
     path  "versions.yml"                              , emit: versions
 
-    path "*.Solo.out/GeneFull_Ex50pAS/${meta.id}.Summary.csv" , optional:true, emit: summary
     tuple val(meta), path('*sortedByCoord.out.bam')  , optional:true, emit: bam_sorted
     tuple val(meta), path('*toTranscriptome.out.bam'), optional:true, emit: bam_transcript
     tuple val(meta), path('*Aligned.unsort.out.bam') , optional:true, emit: bam_unsorted
@@ -303,7 +296,7 @@ workflow ACCURASCOPERNA {
         "${projectDir}/assets/",
         CONVERT.out.p3_starsolo_cmd.map { it.text }
     )
-    ch_multiqc_files = ch_multiqc_files.mix(STARSOLO_P3.out.log_mapping.collect()).mix(STARSOLO_P3.out.summary.collect())
+    ch_multiqc_files = ch_multiqc_files.mix(STARSOLO_P3.out.log_mapping.collect()).mix(STARSOLO_P3.out.solo_out.collect())
     ch_versions = ch_versions.mix(STARSOLO_P3.out.versions.first())
 
     // starsolo p3p5
