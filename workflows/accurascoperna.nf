@@ -91,7 +91,7 @@ process FILTER_GTF {
 
 process STAR_GENOME {
     tag "$genome_name"
-    label 'process_high'
+    label 'process_medium'
 
     conda "bioconda::star==2.7.11b"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -134,7 +134,7 @@ process STAR_GENOME {
 
 process STARSOLO_P3 {
     tag "${meta.id}.p3"
-    label 'process_high'
+    label 'process_medium'
 
     conda "bioconda::star==2.7.11b"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -191,7 +191,7 @@ END_VERSIONS
 
 process STARSOLO_P3P5 {
     tag "${meta.id}.p3p5"
-    label 'process_high'
+    label 'process_medium'
 
     conda "bioconda::star==2.7.11b"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
