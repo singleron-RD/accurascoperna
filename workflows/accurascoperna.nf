@@ -307,6 +307,8 @@ workflow ACCURASCOPERNA {
         "${projectDir}/assets/",
         CONVERT.out.p3p5_starsolo_cmd.map { it.text }
     )
+    ch_multiqc_files = ch_multiqc_files.mix(STARSOLO_P3P5.out.log_mapping.collect()).mix(STARSOLO_P3P5.out.solo_out.collect())
+    ch_versions = ch_versions.mix(STARSOLO_P3.out.versions.first())
 
 
     //

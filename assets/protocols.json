@@ -5,5 +5,12 @@
         "bc_p3": "bc.p3.txt",
         "bc_p5": "bc.p5.txt",
         "linker_p3": "linker.p3.txt"
+    },
+    "AccuraSCOPE-V2": {
+        "pattern_p3": "L9C9U12",
+        "pattern_p5": "C6U12",
+        "bc_p3": "bc.p3.txt",
+        "bc_p5": "bc.p5.txt",
+        "linker_p3": "linker.p3.txt"
     }
 }

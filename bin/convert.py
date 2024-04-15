@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Convert p5 barcode to p3 barcode
+Convert p5 barcode to p3 barcode. Add extra 2bp prefix to UMI
 Generate starsolo command for p3 and p3p5
 Input:
     protocol.json: whitelist and linker
@@ -22,6 +22,10 @@ import sys
 # stdout
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO, stream=sys.stdout)
 logger = logging.getLogger(__name__)
+
+EXTRA_UMI_LEN = 2
+P3_UMI_PREFIX = 'CT'
+P5_UMI_PREFIX = "AG"
 
 def get_protocol_dict(assets_dir):
     """
@@ -81,7 +85,7 @@ class Starsolo:
         
         ul = pattern_dict["U"][0].start
         ur = pattern_dict["U"][0].stop
-        umi_len = ur - ul
+        umi_len = ur - ul + EXTRA_UMI_LEN
 
         solo_type = 'CB_UMI_Simple'
         l, r = pattern_dict["C"][0].start, pattern_dict["C"][0].stop
@@ -172,7 +176,7 @@ if __name__ == "__main__":
             if bc_p3 in bc_p3_mismatch_dict:
                 prime = 'p3'
                 bc = bc_p3_mismatch_dict[bc_p3]
-                umi = utils.get_seq_str(seq1, pattern_dict_p3["U"])
+                umi = P3_UMI_PREFIX + utils.get_seq_str(seq1, pattern_dict_p3["U"])
                 bc_qual = utils.get_seq_str(qual1, pattern_dict_p3["C"])
                 umi_qual = utils.get_seq_str(qual1, pattern_dict_p3["U"])
             else:
@@ -180,12 +184,12 @@ if __name__ == "__main__":
                 if bc_p5 in bc_p5_mismatch_dict:
                     prime = 'p5'
                     bc = bc_p5_p3_dict[bc_p5_mismatch_dict[bc_p5]]
-                    umi = utils.get_seq_str(seq2, pattern_dict_p5["U"]) + extra_bp
+                    umi = P5_UMI_PREFIX + utils.get_seq_str(seq2, pattern_dict_p5["U"]) + extra_bp
                     bc_qual = utils.get_seq_str(qual1, pattern_dict_p5["C"]) + 'F' * bc_extra_len
                     umi_qual = utils.get_seq_str(qual1, pattern_dict_p5["U"]) + 'F' * extra_len
             if prime in ['p3','p5']:
                 seq1 = bc+umi
-                qual1 = bc_qual+umi_qual
+                qual1 = bc_qual + 'F' * EXTRA_UMI_LEN + umi_qual
                 outdict[f"{prime}_R1"].write(utils.str_fq(name1, seq1, qual1))
                 outdict[f"{prime}_R2"].write(utils.str_fq(name2, seq2, qual2))
 
