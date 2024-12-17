@@ -180,7 +180,7 @@ if __name__ == "__main__":
                 if bc_p5 in bc_p5_mismatch_dict:
                     prime = 'p5'
                     bc = bc_p5_p3_dict[bc_p5_mismatch_dict[bc_p5]]
-                    umi = utils.get_seq_str(seq2, pattern_dict_p5["U"]) + extra_bp
+                    umi = utils.get_seq_str(seq1, pattern_dict_p5["U"]) + extra_bp
                     bc_qual = utils.get_seq_str(qual1, pattern_dict_p5["C"]) + 'F' * bc_extra_len
                     umi_qual = utils.get_seq_str(qual1, pattern_dict_p5["U"]) + 'F' * extra_len
             if prime in ['p3','p5']:
