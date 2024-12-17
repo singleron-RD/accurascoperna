@@ -30,6 +30,7 @@ process CONVERT {
     val starsolo_common_args
     val starsolo_p3_args
     val starsolo_p3p5_args
+    val star_cpus
 
     output:
     tuple val(meta), path("${meta.id}_p3_*.fastq"), emit: p3_reads
@@ -50,7 +51,7 @@ process CONVERT {
         --fq2 ${reverse.join( "," )} \\
         --assets_dir ${assets_dir} \\
         --protocol ${protocol} \\
-        --thread $task.cpus \\
+        --thread ${star_cpus} \\
         --common_args \"${starsolo_common_args}\"  \\
         --p3_args \"${starsolo_p3_args}\"  \\
         --p3p5_args \"${starsolo_p3p5_args}\"  
@@ -286,7 +287,8 @@ workflow ACCURASCOPERNA {
         params.protocol,
         params.starsolo_common_args,
         params.starsolo_p3_args,
-        params.starsolo_p3p5_args
+        params.starsolo_p3p5_args,
+        params.star_cpus
     )
 
     // starsolo p3
